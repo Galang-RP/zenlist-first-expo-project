@@ -41,9 +41,6 @@ yarn-error.*
 # logs
 *.log
 
-# ai / agent
-AGENTS.md
-
 app-example
 
 # generated native folders
