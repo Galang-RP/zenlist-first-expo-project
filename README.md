@@ -1,50 +1,122 @@
-# Welcome to your Expo app 👋
+# ZenList
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Aplikasi manajemen tugas (to-do list) berbasis **React Native (Expo)** yang berjalan sepenuhnya secara lokal tanpa backend. ZenList dirancang untuk membantu mencatat, melacak tenggat waktu, dan mengelola status tugas sehari-hari dengan antarmuka yang sederhana dan cepat.
 
-## Get started
+---
 
-1. Install dependencies
+## Daftar Isi
 
-   ```bash
-   npm install
-   ```
+- [Fitur](#fitur)
+- [Tech Stack](#tech-stack)
+- [Screenshots](#screenshots)
+- [Cara Install & Jalankan](#cara-install--jalankan)
+- [Struktur Project](#struktur-project)
 
-2. Start the app
+---
 
-   ```bash
-   npx expo start
-   ```
+## Fitur
 
-In the output, you'll find options to open the app in a
+- **Home Screen** — Menampilkan maksimal 6 tugas yang belum selesai, dengan kategori status:
+  - 🟢 **Done** — Tugas selesai
+  - 🔴 **Deadline** — Tenggat hari ini atau sudah lewat
+  - ⏳ **Pending** — Masih menunggu
+- **Create Task** — Tambah tugas baru dengan judul (maks 35 karakter) dan deadline (minimal besok)
+- **Task Detail** — Lihat detail, edit judul & deadline, toggle status Done/Undone, atau hapus tugas dengan konfirmasi
+- **All Tasks** — Lihat seluruh daftar tugas tanpa filter
+- **Penyimpanan Lokal** — Semua data tersimpan di perangkat menggunakan AsyncStorage
+- **Navigasi Tab & Stack** — Berbasis Expo Router (file-based routing)
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+---
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Tech Stack
 
-## Get a fresh project
+| Teknologi                                                                                               | Versi    | Kegunaan               |
+| ------------------------------------------------------------------------------------------------------- | -------- | ---------------------- |
+| [Expo](https://expo.dev)                                                                                | ~54.0.33 | Framework React Native |
+| [React Native](https://reactnative.dev)                                                                 | 0.81.5   | Platform mobile        |
+| [React](https://react.dev)                                                                              | 19.1.0   | UI library             |
+| [TypeScript](https://www.typescriptlang.org)                                                            | ~5.9.2   | Type safety            |
+| [Expo Router](https://docs.expo.dev/router/introduction/)                                               | ~6.0.23  | File-based routing     |
+| [AsyncStorage](https://react-native-async-storage.github.io/async-storage/)                             | 2.2.0    | Penyimpanan lokal      |
+| [@react-native-community/datetimepicker](https://github.com/react-native-datetimepicker/datetimepicker) | 8.4.4    | Pemilih tanggal        |
+| [@expo/vector-icons](https://docs.expo.dev/guides/icons/) (Ionicons)                                    | ^15.0.3  | Ikon                   |
+| [react-native-reanimated](https://docs.swmansion.com/react-native-reanimated/)                          | ~4.1.1   | Animasi                |
+| [react-native-gesture-handler](https://docs.swmansion.com/react-native-gesture-handler/)                | ~2.28.0  | Gesture                |
 
-When you're ready, run:
+---
+
+## Screenshots
+
+| Home                                   | Create Task                                    | Task Detail                                    | All Tasks                                       |
+| -------------------------------------- | ---------------------------------------------- | ---------------------------------------------- | ----------------------------------------------- |
+| ![Home](assets/documentation/home.jpg) | ![Create](assets/documentation/addSection.jpg) | ![Detail](assets/documentation/detailTask.jpg) | ![All Tasks](assets/documentation/showMore.jpg) |
+
+---
+
+## Cara Install & Jalankan
+
+### Prasyarat
+
+- [Node.js](https://nodejs.org) (LTS)
+- [Expo CLI](https://docs.expo.dev/get-started/installation/)
+- [Android Studio](https://developer.android.com/studio) (untuk emulator Android) atau
+- [Expo Go](https://expo.dev/client) di perangkat fisik
+
+### Langkah-langkah
 
 ```bash
-npm run reset-project
+# 1. Clone repository
+git clone https://github.com/GalangKuy/zenlist-app.git
+cd zenlist-app
+
+# 2. Install dependencies
+npm install
+
+# 3. Jalankan aplikasi
+npm start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Setelah server Expo berjalan, scan QR code dengan **Expo Go** atau tekan:
 
-## Learn more
+- `a` untuk membuka di emulator Android
+- `i` untuk membuka di simulator iOS
+- `w` untuk membuka di web browser
 
-To learn more about developing your project with Expo, look at the following resources:
+### Script yang Tersedia
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+| Perintah          | Keterangan            |
+| ----------------- | --------------------- |
+| `npm start`       | Mulai dev server Expo |
+| `npm run android` | Jalankan di Android   |
+| `npm run ios`     | Jalankan di iOS       |
+| `npm run web`     | Jalankan di web       |
+| `npm run lint`    | Linting (ESLint)      |
 
-## Join the community
+---
 
-Join our community of developers creating universal apps.
+## Struktur Project
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```
+zenlist-app/
+├── app/                          # Expo Router (file-based routing)
+│   ├── _layout.tsx               # Root layout (Stack navigator)
+│   ├── (tabs)/                   # Tab navigator
+│   │   ├── _layout.tsx           # Konfigurasi tab (Home + Add)
+│   │   ├── index.tsx             # Home screen
+│   │   └── create.tsx            # Create task screen
+│   └── task/
+│       ├── [id].tsx              # Task detail / edit / delete
+│       └── allTasks.tsx          # All tasks list
+├── assets/
+│   ├── icons/                    # Ikon aplikasi (iOS, Android, splash)
+│   ├── images/                   # Gambar pendukung
+│   └── documentation/            # Screenshot untuk dokumentasi
+├── components/
+│   └── Header.tsx                # Komponen header bersama
+├── utils/
+│   └── color.ts                  # Tema warna aplikasi
+├── app.json                      # Konfigurasi Expo
+├── eas.json                      # Konfigurasi EAS Build
+├── tsconfig.json                 # Konfigurasi TypeScript
+└── package.json                  # Dependencies & scripts
+```

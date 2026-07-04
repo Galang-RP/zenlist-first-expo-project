@@ -2,11 +2,10 @@ import Header from "@/components/Header";
 import { color } from "@/utils/color";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Link, router, useFocusEffect } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import React, { useState } from "react";
 import {
   FlatList,
-  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -14,7 +13,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const HomeScreen = () => {
+const AllTasksScreen = () => {
   const [allTasks, setAllTasks] = useState<any[]>([]);
 
   useFocusEffect(
@@ -95,64 +94,71 @@ const HomeScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle={"dark-content"} />
-      <View>
-        <Header />
-        <Text style={styles.headerSecond}>Help your tasks</Text>
+      <Header />
 
-        <View style={styles.content}>
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
+      <View style={styles.content}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: 15,
+          }}
+        >
+          <Text style={{ fontWeight: "bold", fontSize: 16 }}>ALL TASKS</Text>
+          <TouchableOpacity
+            onPress={() => router.push("/(tabs)")}
+            style={styles.backBtn}
           >
-            <Text style={{ marginBottom: 15, fontWeight: "bold" }}>
-              YOUR TASKS
-            </Text>
-            <Link href={"../task/allTasks"} style={styles.show}>
-              Show more
-            </Link>
-          </View>
-
-          <View>
-            <FlatList
-              contentContainerStyle={{
-                paddingHorizontal: 4,
-                paddingTop: 4,
-                paddingBottom: 20,
-              }}
-              data={allTasks
-                .filter((item) => item.status !== "done")
-                .slice(0, 6)}
-              keyExtractor={(item) => item.id}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  onPress={() => router.push(`../task/${item.id}`)}
-                  style={styles.detailTask}
-                >
-                  {getTaskIcon(item)}
-
-                  <View>
-                    <Text style={styles.textPrim}>{item.title}</Text>
-                    <Text style={styles.textSec}>
-                      <Ionicons name="calendar" /> {item.deadline}
-                    </Text>
-                    <Text style={styles.textSec}>
-                      {getTaskStatusText(item)}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              )}
-              ListEmptyComponent={() => (
-                <Text>No tasks yet. Let's create one!</Text>
-              )}
+            <Ionicons
+              name="arrow-back-circle-sharp"
+              size={24}
+              color={"white"}
             />
-          </View>
+            <Text style={{ color: "white" }}>Back</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View
+          style={{
+            flex: 1,
+          }}
+        >
+          <FlatList
+            contentContainerStyle={{
+              paddingHorizontal: 4,
+              paddingTop: 4,
+            }}
+            showsVerticalScrollIndicator={false}
+            data={allTasks}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                onPress={() => router.push(`../task/${item.id}`)}
+                style={styles.detailTask}
+              >
+                {getTaskIcon(item)}
+                <View>
+                  <Text style={styles.textPrim}>{item.title}</Text>
+                  <Text style={styles.textSec}>
+                    <Ionicons name="calendar" /> {item.deadline}
+                  </Text>
+                  <Text style={styles.textSec}>{getTaskStatusText(item)}</Text>
+                </View>
+              </TouchableOpacity>
+            )}
+            ListEmptyComponent={() => (
+              <Text>No tasks yet. Let's create one!</Text>
+            )}
+          />
         </View>
       </View>
+      <View style={styles.footer}></View>
     </SafeAreaView>
   );
 };
 
-export default HomeScreen;
+export default AllTasksScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -160,22 +166,17 @@ const styles = StyleSheet.create({
     backgroundColor: color.bg,
     width: "100%",
     height: "100%",
+    flex: 1,
   },
-  header: {
-    color: color.textPrim,
-    fontWeight: "bold",
-    fontSize: 30,
-  },
-  headerSecond: {
-    color: color.textSec,
-    fontSize: 16,
-    marginTop: -5,
-  },
-  show: {
-    color: color.primary,
+  footer: {
+    backgroundColor: color.bg,
+    width: "100%",
+    height: 20,
   },
   content: {
     marginTop: 20,
+    flex: 1,
+    overflow: "hidden",
   },
   detailTask: {
     flexDirection: "row",
@@ -186,7 +187,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 15,
     paddingLeft: 8,
-    marginBottom: 15,
+    marginBottom: 10,
   },
   textPrim: {
     fontSize: 16,
@@ -196,5 +197,15 @@ const styles = StyleSheet.create({
   textSec: {
     color: color.textSec,
     fontSize: 12,
+  },
+  backBtn: {
+    backgroundColor: color.primary,
+    borderRadius: 15,
+    elevation: 2,
+    flexDirection: "row",
+    paddingHorizontal: 10,
+    height: 35,
+    alignItems: "center",
+    gap: 5,
   },
 });
